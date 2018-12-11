@@ -1,13 +1,10 @@
 sudo: required
 services:
   - docker
-
 before_install:
   - docker build -t actyvyst/react-test -f ./client/Dockerfile.dev ./client
-
 scripts:
   - docker run actyvyst/react-test npm test -- --coverage
-
 after_build:
   - docker build -t multi-client ./client
   - docker build -t multi-nginx ./nginx

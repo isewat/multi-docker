@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t actyvyst/react-test -f ./client/Dockerfile.dev ./client
+
+scripts:
+  - docker run actyvyst/react-test npm test -- --coverage
+
+after_build:
+  - docker build -t multi-client ./client
+  - docker build -t multi-nginx ./nginx
+  - docker build -t multi-server ./server
+  - docker build -t multi-worker ./worker
+  # Login to docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Push images to docker hub
+  - docker push actyvyst/multi-client
+  - docker push actyvyst/multi-nginx
+  - docker push actyvyst/multi-server
+  - docker push actyvyst/multi-worker

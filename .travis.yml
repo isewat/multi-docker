@@ -1,6 +1,7 @@
 sudo: required
 services:
   - docker
+language: node_js
 before_install:
   - docker build -t actyvyst/react-test -f ./client/Dockerfile.dev ./client
 scripts:
